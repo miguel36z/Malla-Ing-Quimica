@@ -1,218 +1,102 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Malla Curricular Ingeniería Química</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Malla Curricular - Ingeniería Química</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f8f9fa;
-      margin: 0;
-      padding: 2rem;
+      font-family: Arial, sans-serif;
+      background-color: #f7fafd;
+      padding: 20px;
+      text-align: center;
     }
     h1 {
-      text-align: center;
-      margin-bottom: 1rem;
-      color: #2d3436;
+      margin-bottom: 30px;
     }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(10, 1fr);
-      gap: 1rem;
-      overflow-x: auto;
+    .row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
     }
     .semester {
-      background: #dfe6e9;
+      background-color: #e4ecf2;
       border-radius: 10px;
-      padding: 1rem;
-      min-width: 220px;
+      padding: 15px;
+      margin: 10px;
+      width: 230px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
     .semester h2 {
-      font-size: 1.1rem;
-      text-align: center;
-      margin-bottom: 0.5rem;
+      font-size: 16px;
+      margin-bottom: 10px;
     }
     .subject {
-      background: #ffffff;
-      border-left: 5px solid #74b9ff;
-      margin: 0.4rem 0;
-      padding: 0.4rem;
+      background-color: white;
       border-radius: 5px;
-      cursor: pointer;
-      position: relative;
-      transition: background 0.2s ease;
-    }
-    .subject:hover {
-      background: #f1f2f6;
+      padding: 8px;
+      margin: 5px 0;
+      text-align: left;
+      border-left: 5px solid #4e9ed4;
     }
     .subject.completed {
-      background-color: #55efc4;
-      text-decoration: line-through;
-    }
-    .subject.locked {
       background-color: #ffeaa7;
-      cursor: not-allowed;
-    }
-    .subject .tooltip {
-      visibility: hidden;
-      background-color: #2d3436;
-      color: #fff;
-      text-align: center;
-      padding: 5px;
-      border-radius: 6px;
-      position: absolute;
-      z-index: 1;
-      bottom: 125%;
-      left: 50%;
-      transform: translateX(-50%);
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    .subject.locked:hover .tooltip {
-      visibility: visible;
-      opacity: 1;
     }
   </style>
 </head>
 <body>
   <h1>Malla Curricular - Ingeniería Química</h1>
-  <div class="grid" id="malla"></div>
+  <div class="row">
+    <div class="semester">
+      <h2>PRIMER SEMESTRE</h2>
+      <div class="subject">Lenguaje y cultura</div>
+      <div class="subject">Calculo diferencial</div>
+      <div class="subject">Geometría analítica</div>
+      <div class="subject">Fundamentos de la química</div>
+      <div class="subject">Introducción a la ing química</div>
+      <div class="subject">Diseño de productos</div>
+    </div>
+    <div class="semester">
+      <h2>SEGUNDO SEMESTRE</h2>
+      <div class="subject">Humanismo y cultura</div>
+      <div class="subject">Cristología</div>
+      <div class="subject completed">Álgebra lineal</div>
+      <div class="subject completed">Cálculo Integral</div>
+      <div class="subject completed">Física mecánica</div>
+      <div class="subject completed">Química orgánica 1</div>
+    </div>
+    <div class="semester">
+      <h2>TERCER SEMESTRE</h2>
+      <div class="subject completed">Cálculo vectorial</div>
+      <div class="subject completed">Ecuaciones diferenciales</div>
+      <div class="subject completed">Electricidad y magnetismos</div>
+      <div class="subject completed">Química orgánica 2</div>
+      <div class="subject completed">Elementos de la programación</div>
+    </div>
+  </div>
 
-  <script>
-    const mallaData = {
-      "PRIMER SEMESTRE": [
-        "Lenguaje y cultura",
-        "Calculo diferencial",
-        "Geometría analítica",
-        "Fundamentos de la quimica",
-        "Introducción a la ing quimica",
-        "Diseño de productos"
-      ],
-      "SEGUNDO SEMESTRE": [
-        { name: "Humanismo y cultura" },
-        { name: "Cristología" },
-        { name: "Algebra lineal", reqs: ["Geometría analítica"] },
-        { name: "Calculo Integral", reqs: ["Calculo diferencial"] },
-        { name: "Fisica mecánica", reqs: ["Calculo diferencial", "Geometría analítica"] },
-        { name: "Quimica orgánica 1", reqs: ["Fundamentos de la quimica"] }
-      ],
-      "TERCER SEMESTRE": [
-        { name: "Calculo vectorial", reqs: ["Calculo Integral", "Geometría analítica"] },
-        { name: "Ecuaciones diferenciales", reqs: ["Calculo Integral"] },
-        { name: "Electricidad y magnetismos", reqs: ["Fisica mecánica"] },
-        { name: "Quimica orgánica 2", reqs: ["Quimica orgánica 1"] },
-        { name: "Elementos de la programación", reqs: ["Algebra lineal"] }
-      ],
-      "CUARTO SEMESTRE": [
-        "Ética general",
-        { name: "Bioquímica", reqs: ["Quimica orgánica 2"] },
-        { name: "Lab. De quimica orgánica y bioquímica", reqs: [] },
-        { name: "Fisicoquímica", reqs: ["Fisica mecánica"] },
-        { name: "Mecánica de fluidos", reqs: ["Fisica mecánica"] },
-        { name: "Métodos numéricos", reqs: ["Ecuaciones diferenciales", "Calculo vectorial"] },
-        { name: "Estadística y diseño experimental", reqs: ["Calculo Integral"] }
-      ],
-      "QUINTO SEMESTRE": [
-        "Línea de formación humanista 1",
-        "Emprendimiento y responsabilidad social",
-        { name: "Termodinámica clásica", reqs: ["Fisicoquímica", "Calculo Integral"] },
-        { name: "Quimica analítica", reqs: ["Quimica orgánica 1"] },
-        { name: "Lab de quimica analítica", reqs: [] },
-        { name: "Fenómenos de transporte", reqs: ["Calculo vectorial", "Ecuaciones diferenciales", "Mecánica de fluidos"] },
-        "Metodología de la investigación"
-      ],
-      "SEXTO SEMESTRE": [
-        "Crédito optativo CBD",
-        { name: "Termodinámica quimica", reqs: ["Termodinámica clásica", "Métodos numéricos"] },
-        { name: "Laboratorio de termodinámica", reqs: [] },
-        { name: "Transferencia de calor y masa", reqs: ["Fenómenos de transporte", "Calculo vectorial"] },
-        { name: "Balance de procesos", reqs: ["Termodinámica clásica", "Métodos numéricos"] },
-        "Electiva 1"
-      ],
-      "SÉPTIMO SEMESTRE": [
-        "Línea de formación humanista 2",
-        { name: "Tecnología de partículas", reqs: ["Mecánica de fluidos"] },
-        { name: "Lab de operaciones unitarias: momentum", reqs: [] },
-        { name: "Preparación y evaluación de proyectos", reqs: ["Estadística y diseño experimental"] },
-        { name: "Optativo CP 1", reqs: ["Balance de procesos"] },
-        "Electiva 2"
-      ],
-      "OCTAVO SEMESTRE": [
-        { name: "Operaciones de transferencia de masa", reqs: ["Termodinámica quimica", "Transferencia de calor y masa", "Balance de procesos"] },
-        { name: "Lab de operaciones unitarias", reqs: [] },
-        { name: "Ingeniería de las reacciones química", reqs: ["Bioquímica", "Transferencia de calor y masa", "Balance de procesos"] },
-        { name: "Lab de las reacciones química", reqs: [] },
-        "Gestión de proyectos",
-        { name: "Optativo CI 1", reqs: ["Balance de procesos"] }
-      ],
-      "NOVENO SEMESTRE": [
-        "Ética profesional",
-        { name: "Diseño de procesos", reqs: ["Operaciones de transferencia de masa", "Preparación y evaluación de proyectos", "Tecnología de partículas"] },
-        { name: "Control de procesos", reqs: ["Balance de procesos", "Operaciones de transferencia de masa", "Ingeniería de las reacciones química"] },
-        { name: "Lab de ingeniería de procesos", reqs: [] },
-        { name: "Contexto profesional", reqs: ["Preparación y evaluación de proyectos"] },
-        { name: "Optativo CP 2", reqs: ["Optativo CP 1"] },
-        { name: "Optativo CI 2", reqs: ["Optativo CI 1"] }
-      ],
-      "DÉCIMO SEMESTRE": [
-        "Línea de formación humanista 3",
-        "Prácticas profesionales",
-        { name: "Optativo CI 3", reqs: ["Optativo CI 2"] }
-      ]
-    };
-
-    const estado = JSON.parse(localStorage.getItem('estadoMallaIQ')) || {};
-
-    function renderMalla() {
-      const contenedor = document.getElementById('malla');
-      contenedor.innerHTML = '';
-
-      Object.entries(mallaData).forEach(([semestre, materias]) => {
-        const col = document.createElement('div');
-        col.className = 'semester';
-
-        const titulo = document.createElement('h2');
-        titulo.textContent = semestre;
-        col.appendChild(titulo);
-
-        materias.forEach(materia => {
-          const name = typeof materia === 'string' ? materia : materia.name;
-          const reqs = materia.reqs || [];
-
-          const div = document.createElement('div');
-          div.className = 'subject';
-          div.textContent = name;
-
-          const completada = estado[name];
-          const requisitosCumplidos = reqs.every(r => estado[r]);
-
-          if (completada) div.classList.add('completed');
-          else if (!requisitosCumplidos && reqs.length) {
-            div.classList.add('locked');
-
-            const tooltip = document.createElement('span');
-            tooltip.className = 'tooltip';
-            tooltip.textContent = 'Requiere: ' + reqs.filter(r => !estado[r]).join(', ');
-            div.appendChild(tooltip);
-          }
-
-          div.addEventListener('click', () => {
-            if (!div.classList.contains('locked')) {
-              estado[name] = !estado[name];
-              localStorage.setItem('estadoMallaIQ', JSON.stringify(estado));
-              renderMalla();
-            }
-          });
-
-          col.appendChild(div);
-        });
-
-        contenedor.appendChild(col);
-      });
-    }
-
-    renderMalla();
-  </script>
+  <div class="row">
+    <div class="semester">
+      <h2>CUARTO SEMESTRE</h2>
+      <div class="subject">Ética general</div>
+      <div class="subject completed">Bioquímica</div>
+      <div class="subject">Lab. De química orgánica y bioquímica</div>
+      <div class="subject completed">Fisicoquímica</div>
+      <div class="subject completed">Mecánica de fluidos</div>
+      <div class="subject completed">Métodos numéricos</div>
+      <div class="subject completed">Estadística y diseño experimental</div>
+    </div>
+    <div class="semester">
+      <h2>QUINTO SEMESTRE</h2>
+      <div class="subject">Línea de formación humanista 1</div>
+      <div class="subject">Emprendimiento y responsabilidad social</div>
+      <div class="subject completed">Termodinámica clásica</div>
+      <div class="subject completed">Química analítica</div>
+      <div class="subject">Lab de química analítica</div>
+      <div class="subject completed">Fenómenos de transporte</div>
+      <div class="subject">Metodología de la investigación</div>
+    </div>
+  </div>
 </body>
 </html>
