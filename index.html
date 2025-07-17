@@ -113,7 +113,53 @@
         { name: "Métodos numéricos", reqs: ["Ecuaciones diferenciales", "Calculo vectorial"] },
         { name: "Estadística y diseño experimental", reqs: ["Calculo Integral"] }
       ],
-      // Continúa agregando los semestres de la misma forma...
+      "QUINTO SEMESTRE": [
+        "Línea de formación humanista 1",
+        "Emprendimiento y responsabilidad social",
+        { name: "Termodinámica clásica", reqs: ["Fisicoquímica", "Calculo Integral"] },
+        { name: "Quimica analítica", reqs: ["Quimica orgánica 1"] },
+        { name: "Lab de quimica analítica", reqs: [] },
+        { name: "Fenómenos de transporte", reqs: ["Calculo vectorial", "Ecuaciones diferenciales", "Mecánica de fluidos"] },
+        "Metodología de la investigación"
+      ],
+      "SEXTO SEMESTRE": [
+        "Crédito optativo CBD",
+        { name: "Termodinámica quimica", reqs: ["Termodinámica clásica", "Métodos numéricos"] },
+        { name: "Laboratorio de termodinámica", reqs: [] },
+        { name: "Transferencia de calor y masa", reqs: ["Fenómenos de transporte", "Calculo vectorial"] },
+        { name: "Balance de procesos", reqs: ["Termodinámica clásica", "Métodos numéricos"] },
+        "Electiva 1"
+      ],
+      "SÉPTIMO SEMESTRE": [
+        "Línea de formación humanista 2",
+        { name: "Tecnología de partículas", reqs: ["Mecánica de fluidos"] },
+        { name: "Lab de operaciones unitarias: momentum", reqs: [] },
+        { name: "Preparación y evaluación de proyectos", reqs: ["Estadística y diseño experimental"] },
+        { name: "Optativo CP 1", reqs: ["Balance de procesos"] },
+        "Electiva 2"
+      ],
+      "OCTAVO SEMESTRE": [
+        { name: "Operaciones de transferencia de masa", reqs: ["Termodinámica quimica", "Transferencia de calor y masa", "Balance de procesos"] },
+        { name: "Lab de operaciones unitarias", reqs: [] },
+        { name: "Ingeniería de las reacciones química", reqs: ["Bioquímica", "Transferencia de calor y masa", "Balance de procesos"] },
+        { name: "Lab de las reacciones química", reqs: [] },
+        "Gestión de proyectos",
+        { name: "Optativo CI 1", reqs: ["Balance de procesos"] }
+      ],
+      "NOVENO SEMESTRE": [
+        "Ética profesional",
+        { name: "Diseño de procesos", reqs: ["Operaciones de transferencia de masa", "Preparación y evaluación de proyectos", "Tecnología de partículas"] },
+        { name: "Control de procesos", reqs: ["Balance de procesos", "Operaciones de transferencia de masa", "Ingeniería de las reacciones química"] },
+        { name: "Lab de ingeniería de procesos", reqs: [] },
+        { name: "Contexto profesional", reqs: ["Preparación y evaluación de proyectos"] },
+        { name: "Optativo CP 2", reqs: ["Optativo CP 1"] },
+        { name: "Optativo CI 2", reqs: ["Optativo CI 1"] }
+      ],
+      "DÉCIMO SEMESTRE": [
+        "Línea de formación humanista 3",
+        "Prácticas profesionales",
+        { name: "Optativo CI 3", reqs: ["Optativo CI 2"] }
+      ]
     };
 
     const estado = JSON.parse(localStorage.getItem('estadoMallaIQ')) || {};
