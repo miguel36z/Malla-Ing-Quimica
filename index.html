@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Malla Curricular Ingeniería Química</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f8f9fa;
+      margin: 0;
+      padding: 2rem;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+      color: #2d3436;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 1rem;
+      overflow-x: auto;
+    }
+    .semester {
+      background: #dfe6e9;
+      border-radius: 10px;
+      padding: 1rem;
+      min-width: 220px;
+    }
+    .semester h2 {
+      font-size: 1.1rem;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+    .subject {
+      background: #ffffff;
+      border-left: 5px solid #74b9ff;
+      margin: 0.4rem 0;
+      padding: 0.4rem;
+      border-radius: 5px;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.2s ease;
+    }
+    .subject:hover {
+      background: #f1f2f6;
+    }
+    .subject.completed {
+      background-color: #55efc4;
+      text-decoration: line-through;
+    }
+    .subject.locked {
+      background-color: #ffeaa7;
+      cursor: not-allowed;
+    }
+    .subject .tooltip {
+      visibility: hidden;
+      background-color: #2d3436;
+      color: #fff;
+      text-align: center;
+      padding: 5px;
+      border-radius: 6px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .subject.locked:hover .tooltip {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <h1>Malla Curricular - Ingeniería Química</h1>
+  <div class="grid" id="malla"></div>
+
+  <script>
+    const mallaData = {
+      "PRIMER SEMESTRE": [
+        "Lenguaje y cultura",
+        "Calculo diferencial",
+        "Geometría analítica",
+        "Fundamentos de la quimica",
+        "Introducción a la ing quimica",
+        "Diseño de productos"
+      ],
+      "SEGUNDO SEMESTRE": [
+        { name: "Humanismo y cultura" },
+        { name: "Cristología" },
+        { name: "Algebra lineal", reqs: ["Geometría analítica"] },
+        { name: "Calculo Integral", reqs: ["Calculo diferencial"] },
+        { name: "Fisica mecánica", reqs: ["Calculo diferencial", "Geometría analítica"] },
+        { name: "Quimica orgánica 1", reqs: ["Fundamentos de la quimica"] }
+      ],
+      "TERCER SEMESTRE": [
+        { name: "Calculo vectorial", reqs: ["Calculo Integral", "Geometría analítica"] },
+        { name: "Ecuaciones diferenciales", reqs: ["Calculo Integral"] },
+        { name: "Electricidad y magnetismos", reqs: ["Fisica mecánica"] },
+        { name: "Quimica orgánica 2", reqs: ["Quimica orgánica 1"] },
+        { name: "Elementos de la programación", reqs: ["Algebra lineal"] }
+      ],
+      "CUARTO SEMESTRE": [
+        "Ética general",
+        { name: "Bioquímica", reqs: ["Quimica orgánica 2"] },
+        { name: "Lab. De quimica orgánica y bioquímica", reqs: [] },
+        { name: "Fisicoquímica", reqs: ["Fisica mecánica"] },
+        { name: "Mecánica de fluidos", reqs: ["Fisica mecánica"] },
+        { name: "Métodos numéricos", reqs: ["Ecuaciones diferenciales", "Calculo vectorial"] },
+        { name: "Estadística y diseño experimental", reqs: ["Calculo Integral"] }
+      ],
+      // Continúa agregando los semestres de la misma forma...
+    };
+
+    const estado = JSON.parse(localStorage.getItem('estadoMallaIQ')) || {};
+
+    function renderMalla() {
+      const contenedor = document.getElementById('malla');
+      contenedor.innerHTML = '';
+
+      Object.entries(mallaData).forEach(([semestre, materias]) => {
+        const col = document.createElement('div');
+        col.className = 'semester';
+
+        const titulo = document.createElement('h2');
+        titulo.textContent = semestre;
+        col.appendChild(titulo);
+
+        materias.forEach(materia => {
+          const name = typeof materia === 'string' ? materia : materia.name;
+          const reqs = materia.reqs || [];
+
+          const div = document.createElement('div');
+          div.className = 'subject';
+          div.textContent = name;
+
+          const completada = estado[name];
+          const requisitosCumplidos = reqs.every(r => estado[r]);
+
+          if (completada) div.classList.add('completed');
+          else if (!requisitosCumplidos && reqs.length) {
+            div.classList.add('locked');
+
+            const tooltip = document.createElement('span');
+            tooltip.className = 'tooltip';
+            tooltip.textContent = 'Requiere: ' + reqs.filter(r => !estado[r]).join(', ');
+            div.appendChild(tooltip);
+          }
+
+          div.addEventListener('click', () => {
+            if (!div.classList.contains('locked')) {
+              estado[name] = !estado[name];
+              localStorage.setItem('estadoMallaIQ', JSON.stringify(estado));
+              renderMalla();
+            }
+          });
+
+          col.appendChild(div);
+        });
+
+        contenedor.appendChild(col);
+      });
+    }
+
+    renderMalla();
+  </script>
+</body>
+</html>
